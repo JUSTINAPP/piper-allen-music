@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { client } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: { absolute: "Folk Singer Songwriter | South Coast NSW | Piper Allen" },
   alternates: { canonical: "https://piperallenmusic.com" },
 };
+
+export const dynamic = "force-dynamic";
+
+type NextShow = { date: string; venue: string; location: string };
+
+function formatShowDate(dateStr: string) {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-AU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -16,7 +30,13 @@ const jsonLd = {
   sameAs: ["https://www.instagram.com/piperallenmusic/"],
 };
 
-export default function Home() {
+export default async function Home() {
+  const today = new Date().toISOString().split("T")[0];
+  const nextShow: NextShow | null = await client.fetch(
+    `*[_type == 'show' && isPublished == true && date >= $today] | order(date asc) [0] { date, venue, location }`,
+    { today }
+  );
+
   return (
     <>
       <script
@@ -142,35 +162,37 @@ export default function Home() {
       </section>
 
       {/* ── Next show bar ─────────────────────────────────────────── */}
-      <div className="relative overflow-hidden bg-forest text-cream">
-        <Image
-          src="/images/piper-stage.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-        />
-        <div className="absolute inset-0 bg-forest/80" aria-hidden="true" />
-        <div className="relative z-10 max-w-5xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-6">
-            <span className="text-xs tracking-widest uppercase text-cream/50">
-              Next Show
-            </span>
-            <span className="font-serif text-lg text-cream">
-              Folkshire Festival
-            </span>
-            <span className="hidden sm:block text-cream/40 text-xs tracking-wide">
-              Bath &nbsp;·&nbsp; 14 June 2026
-            </span>
+      {nextShow && (
+        <div className="relative overflow-hidden bg-forest text-cream">
+          <Image
+            src="/images/piper-stage.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+          />
+          <div className="absolute inset-0 bg-forest/80" aria-hidden="true" />
+          <div className="relative z-10 max-w-5xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-6">
+              <span className="text-xs tracking-widest uppercase text-cream/50">
+                Next Show
+              </span>
+              <span className="font-serif text-lg text-cream">
+                {nextShow.venue}
+              </span>
+              <span className="hidden sm:block text-cream/40 text-xs tracking-wide">
+                {nextShow.location}&nbsp;&nbsp;·&nbsp;&nbsp;{formatShowDate(nextShow.date)}
+              </span>
+            </div>
+            <Link
+              href="/shows"
+              className="text-xs tracking-widest uppercase text-cream/60 hover:text-cream transition-colors"
+            >
+              All Shows &rarr;
+            </Link>
           </div>
-          <Link
-            href="/shows"
-            className="text-xs tracking-widest uppercase text-cream/60 hover:text-cream transition-colors"
-          >
-            All Shows &rarr;
-          </Link>
         </div>
-      </div>
+      )}
     </>
   );
 }

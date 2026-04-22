@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { client } from "@/lib/sanity";
+import LyricsViewer from "./LyricsViewer";
 
 export const metadata: Metadata = {
   title: { absolute: "Song Lyrics | Piper Allen" },
@@ -6,13 +8,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://piperallenmusic.com/lyrics" },
 };
 
-export default function LyricsPage() {
-  return (
-    <div className="max-w-5xl mx-auto px-6 py-24">
-      <h1 className="font-serif text-5xl md:text-6xl text-forest mb-4">Lyrics</h1>
-      <p className="font-sans font-light text-ink/60 text-sm tracking-widest uppercase">
-        Songs & words coming soon
-      </p>
-    </div>
+export const dynamic = "force-dynamic";
+
+type Lyric = {
+  title: string;
+  slug: { current: string };
+  verses: string[] | null;
+  chorus: string | null;
+};
+
+export default async function LyricsPage() {
+  const lyrics: Lyric[] = await client.fetch(
+    `*[_type == 'lyrics'] | order(title asc) { title, slug, verses, chorus }`
   );
+
+  return <LyricsViewer lyrics={lyrics} />;
 }
