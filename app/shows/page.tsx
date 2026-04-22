@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: { absolute: "Live Shows & Tour Dates | Piper Allen" },
+  description:
+    "Upcoming live shows and tour dates for folk singer-songwriter Piper Allen — festivals, venues, and free events across Australia.",
+  alternates: { canonical: "https://piperallenmusic.com/shows" },
+};
 
 type ShowType = "festival" | "venue" | "free";
 

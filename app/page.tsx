@@ -1,9 +1,28 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: { absolute: "Folk Singer Songwriter | South Coast NSW | Piper Allen" },
+  alternates: { canonical: "https://piperallenmusic.com" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  name: "Piper Allen",
+  url: "https://piperallenmusic.com",
+  genre: ["Folk", "Acoustic", "Bossa Nova", "Neo Soul"],
+  sameAs: ["https://www.instagram.com/piperallenmusic/"],
+};
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="-mt-16 h-screen relative overflow-hidden flex">
         <Image

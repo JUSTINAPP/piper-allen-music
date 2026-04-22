@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: { absolute: "Book Piper Allen | Enquiries" },
+  description:
+    "Booking enquiries and contact information for folk artist Piper Allen — festivals, venues, private events.",
+  alternates: { canonical: "https://piperallenmusic.com/contact" },
+};
+
 export default function ContactPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-24">

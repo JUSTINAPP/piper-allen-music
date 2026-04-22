@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: { absolute: "Song Lyrics | Piper Allen" },
+  description: "Song lyrics from folk singer-songwriter Piper Allen.",
+  alternates: { canonical: "https://piperallenmusic.com/lyrics" },
+};
+
 export default function LyricsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-24">

@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: { absolute: "Press Kit & Bio | Piper Allen" },
+  description:
+    "Press kit, biography, and downloadable materials for folk artist Piper Allen and Piper and the Daymakers.",
+  alternates: { canonical: "https://piperallenmusic.com/press-kit" },
+};
+
 export default function PressKitPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-24">
