@@ -4,6 +4,7 @@ import { showSchema } from './schemas/show'
 import { lyricsSchema } from './schemas/lyrics'
 import { pressQuoteSchema } from './schemas/pressQuote'
 import { siteContentSchema } from './schemas/siteContent'
+import { mediaSchema } from './schemas/media'
 
 export default defineConfig({
   name: 'piper-allen-music',
@@ -12,6 +13,6 @@ export default defineConfig({
   dataset: 'production',
   plugins: [structureTool()],
   schema: {
-    types: [showSchema, lyricsSchema, pressQuoteSchema, siteContentSchema],
+    types: [showSchema, lyricsSchema, pressQuoteSchema, siteContentSchema, mediaSchema],
   },
 })
