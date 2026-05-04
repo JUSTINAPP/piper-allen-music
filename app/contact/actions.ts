@@ -29,7 +29,7 @@ export async function sendEnquiry(
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Piper Allen <onboarding@resend.dev>',
+      from: 'Piper Allen <noreply@piperallenmusic.com>',
       to: 'piperallen11@gmail.com',
       replyTo: email,
       subject: `Booking Enquiry — ${name}${eventType ? ` (${eventType})` : ''}`,
